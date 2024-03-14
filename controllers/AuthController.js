@@ -1,13 +1,13 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import UserModel from "../models/UserModels.js";
+import UserModel from "../models/UserModel.js";
 import registerSchema from "../validationSchemas/RegisterSchema.js";
 import loginSchema from "../validationSchemas/loginSchema.js";
 
-const UserController = express.Router();
+const AuthController = express.Router();
 
-UserController.post("/register", async (req, res)=>{
+AuthController.post("/register", async (req, res)=>{
     let userData = {
         name: req?.body?.name,
         phone: req?.body?.phone,
@@ -56,7 +56,7 @@ UserController.post("/register", async (req, res)=>{
 });
 
 
-UserController.post("/login", async (req, res)=>{
+AuthController.post("/login", async (req, res)=>{
     let postData = {
         phone: req?.body?.phone,
         password: req?.body?.password
@@ -77,7 +77,7 @@ UserController.post("/login", async (req, res)=>{
                 name: user.name,
                 phone: user.phone,
                 email: user.email
-            }, process.env.SECRET_KEY, { expiresIn: '1h' });
+            }, process.env.SECRET_KEY, { expiresIn: '7d' });
             
             return res.status(200).json({
                 dateTime: new Date(),
@@ -101,4 +101,4 @@ UserController.post("/login", async (req, res)=>{
 
 });
 
-export default UserController;
+export default AuthController;
